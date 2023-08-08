@@ -2,6 +2,9 @@
 Stater is a finite state machine module with the purpose of easing the creation of ai and npcs in games,
 Stater was built with the intent of being used in module scripts.
 
+## Documentation
+The API can be found [here](https://denispionicul.github.io/Stater/).
+
 ## Using Stater
 There are 4 **main** ways to download Stater:
 
