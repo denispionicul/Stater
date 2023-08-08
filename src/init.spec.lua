@@ -41,6 +41,7 @@ return function()
             expect(function()
                 StaterObject:Stop()
             end).never.to.throw()
+            expect(StaterObject._Connections.Main).never.to.be.ok()
         end)
     end)
 

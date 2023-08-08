@@ -122,11 +122,14 @@ function Stater:Start(State: string)
     end
 
     self:SetState(State)
-    self._Connections.Main = self._Trove:Add(task.defer(function()
+
+    self._Connections.Main = self._Trove:AddPromise(Promise.try(function()
         while true do
-            task.wait(self.Tick)
-            if self.State then
-                self.State(self)
+            task.wait(self.Tick)  
+            local StateOption = Option.Wrap(self.State)
+
+            if StateOption:IsSome() then
+                StateOption:Unwrap()(self)
             else
                 warn("Current State is not set, Please consider setting a state.")
             end
@@ -143,7 +146,8 @@ function Stater:Stop()
     assert(self._Connections.Main ~= nil, "You cannot stop twice.")
 
     self._Trove:Remove(self._Connections.Main)
-    task.cancel(self._Connections.Main)
+    self._Connections.Main:cancel()
+    self._Connections.Main = nil
 end
 
 --[=[
