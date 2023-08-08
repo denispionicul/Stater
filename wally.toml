@@ -1,0 +1,11 @@
+[package]
+name = "denispionicul/stater"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+Trove = "sleitnick/trove@1.0.0"
+Signal = "sleitnick/signal@1.5.0"
+Option = "sleitnick/option@1.0.4"	
+Promise = "evaera/promise@^4"
