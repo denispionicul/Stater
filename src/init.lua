@@ -46,10 +46,10 @@ export type Stater = typeof(setmetatable({} :: self, Stater))
 --[=[
     Returns a new Stater Object.
 
+    @error "No States" -- Happens when no States are provided
     @param States -- The Table that will have all the States
     @param Tick -- Optional tick to be set.
     @param Instance -- Optional model to be set.
-    @error "No States" -- Happens when no States are provided
 ]=]
 function Stater.new(States: {(self) -> ()}, Tick: number?, Instance: Model?): Stater
     assert(typeof(States) == "table", "Please provide a valid table with the states.")
