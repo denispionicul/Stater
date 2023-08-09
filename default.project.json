@@ -4,11 +4,11 @@
     "$className": "DataModel",
 
     "ReplicatedStorage": {
-      "Stater": {
-        "$path": "src"
-      },
       "Packages": {
-        "$path": "Packages"
+        "$path": "Packages",
+        "Stater": {
+          "$path": "src"
+        }
       },
       "Example": {
         "$path": "Example"

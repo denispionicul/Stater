@@ -33,6 +33,8 @@ function States.Chasing(self)
     else
         self:SetState("Walking")
     end
+    
+    return true -- if StateConfirmation is set to off, this will not matter
 end
 
 function States.Walking(self) -- You always get self (the Stater Object) as a first parameter.
@@ -46,6 +48,8 @@ function States.Walking(self) -- You always get self (the Stater Object) as a fi
     if Humanoid then
         self:SetState("Chasing")
     end
+
+    return true -- if StateConfirmation is set to off, this will not matter
 end
 
 return States

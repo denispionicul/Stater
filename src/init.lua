@@ -1,5 +1,5 @@
 --!nonstrict
--- Version 1.0
+-- Version 0.2.0
 
 -- Dependencies
 local Option = require(script.Parent:FindFirstChild("Option") or script.Option)
@@ -18,24 +18,35 @@ Stater.__index = Stater
 
 -- Types
 --[=[
+    @type State (Stater) -> boolean?
+    @within Stater
+]=]
+
+--[=[
     @interface Stater
     @within Stater
-    .States {(self) -> ()} -- The Provided States Table, if theres a "Init" state then that function will execute each time the Stater Starts.
+    .States {State} -- The Provided States Table, if theres a "Init" state then that function will execute each time the Stater Starts.
     .Info {any?} -- A table that you can add anything in, this is more recommended than directly inserting variables inside the object.
     .Tick number? -- The time it takes for the current state to be called again after a function is done. Default is 0
     .Instance Model? -- Optional model for when you don't want to do self.Info.Instance. Default is nil.
-    .State (self) -> boolean? -- The current state that the Stater is on.
-    .Changed Signal | RBXScriptSignal -- A signal that fires whenever the State changes.
+    .State State -- The current state that the Stater is on.
+    .StateConfirmation boolean -- If this is enabled, the state MUST return a boolean indicating if the function ran properly.
+    .Changed Signal | RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
+    .StatusChanged Signal | RBXScriptSignal -- Fired whenever the Stater starts or closes. Returns the current status as a boolean.
 ]=]
 
+export type State =  (Stater) -> boolean?
+
 type self = {
-    States: {(self) -> ()},
+    States: {State},
     Info: {any?},
     Tick: number?,
     Instance: Model?,
-    State: (self) -> boolean?,
+    State: State,
+    StateConfirmation: boolean,
 
-    Changed: Signal | RBXScriptSignal
+    Changed: Signal | RBXScriptSignal,
+    StatusChange: Signal | RBXScriptSignal
 }
 
 export type Stater = typeof(setmetatable({} :: self, Stater))
@@ -61,6 +72,7 @@ function Stater.new(States: {(self) -> ()}, Tick: number?, Instance: Model?): St
    self._Connections = {
        Main = nil
    }
+   self._CurrentState = nil
 
     -- Usable
     self.States = States
@@ -68,14 +80,27 @@ function Stater.new(States: {(self) -> ()}, Tick: number?, Instance: Model?): St
     self.Instance = Instance
     self.Tick = Tick or 0
     self.State = nil
+    self.StateConfirmation = false
 
     self.Changed = self._Trove:Construct(Signal)
+    self.StatusChanged = self._Trove:Construct(Signal)
 
     return self
 end
 
 --[=[
+    Returns the current state the Stater is on indicated by a string. If none then nil.
+
+    @method
+]=]
+function Stater:GetCurrentState(): string | nil
+    return self._CurrentState
+end
+
+--[=[
     Returns a boolean indicating if the State currently is on.
+
+    @method
 ]=]
 function Stater:IsWorking(): boolean
     return self._Connections.Main ~= nil
@@ -96,7 +121,8 @@ function Stater:SetState(State: string)
     StateInStates:Match({
         ["Some"] = function(Value)
             self.State = Value
-            self.Changed:Fire(Value)
+            self.Changed:Fire(State, self._CurrentState)
+            self._CurrentState = State
         end,
         ["None"] = function()
             error("No State with the given name.")
@@ -112,6 +138,7 @@ end
     @param State -- The function name inside States represented by a string, this state will be set at the start.
     @error "No State" -- Happens when no State is provided.
     @error "Already Started" -- Happens when the Stater has already started.
+    @error "Already Started" -- Happens when the Stater has already started.
 ]=]
 function Stater:Start(State: string)
     assert(type(State) == "string", "Please provide a state when starting.")
@@ -125,16 +152,26 @@ function Stater:Start(State: string)
 
     self._Connections.Main = self._Trove:AddPromise(Promise.try(function()
         while true do
-            task.wait(self.Tick)  
+            task.wait(self.Tick)
             local StateOption = Option.Wrap(self.State)
 
             if StateOption:IsSome() then
-                StateOption:Unwrap()(self)
+                local Result = Option.Wrap(StateOption:Unwrap()(self))
+
+                if self.StateConfirmation and (Result:IsNone() or Result:Contains(false)) then
+                    warn("State returned false or nil, stopping...")
+                    self:Stop()
+                end
+
+                Result = nil
             else
                 warn("Current State is not set, Please consider setting a state.")
             end
+            StateOption = nil
         end
     end))
+
+    self.StatusChanged:Fire(true)
 end
 
 --[=[
@@ -148,6 +185,10 @@ function Stater:Stop()
     self._Trove:Remove(self._Connections.Main)
     self._Connections.Main:cancel()
     self._Connections.Main = nil
+    self._CurrentState = nil
+    self.State = nil
+
+    self.StatusChanged:Fire(false)
 end
 
 --[=[

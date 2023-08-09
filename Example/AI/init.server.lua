@@ -14,11 +14,12 @@ local States = require(script.States)
 local AI = Stater.new(States, 0.5, Model)
 AI.Info.Humanoid = Humanoid
 AI.Info.HumanoidRootPart = HumanoidRootPart
+AI.StateConfirmation = false -- if this is enabled, all states must return a boolean.
 
 AI:Start("Walking")
 
-AI.Changed:Connect(function()
-    print("State Changed!")
+AI.Changed:Connect(function(CurrentState: string, PreviousState: string)
+    print("State Changed from " .. PreviousState .. " to " .. CurrentState)
 end)
 
 Humanoid.Died:Once(function()
