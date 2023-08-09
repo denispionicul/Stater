@@ -90,8 +90,6 @@ end
 
 --[=[
     Returns the current state the Stater is on indicated by a string. If none then nil.
-
-    @method
 ]=]
 function Stater:GetCurrentState(): string | nil
     return self._CurrentState
@@ -99,8 +97,6 @@ end
 
 --[=[
     Returns a boolean indicating if the State currently is on.
-
-    @method
 ]=]
 function Stater:IsWorking(): boolean
     return self._Connections.Main ~= nil
