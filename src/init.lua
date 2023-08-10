@@ -89,8 +89,7 @@ end
 
 --[=[
     Returns the current state the Stater is on indicated by a string. If none then nil.
-
-    @deprecated v0.2.1 -- You might want to use self.State instead.
+    This is currently the same as self.State.
 ]=]
 function Stater:GetCurrentState(): string | nil
     return self.State
