@@ -1,5 +1,5 @@
 --!nonstrict
--- Version 0.2.0
+-- Version 0.2.1
 
 -- Dependencies
 local Option = require(script.Parent:FindFirstChild("Option") or script.Option)
@@ -35,18 +35,18 @@ Stater.__index = Stater
     .StatusChanged Signal | RBXScriptSignal -- Fired whenever the Stater starts or closes. Returns the current status as a boolean.
 ]=]
 
-export type State =  (Stater) -> boolean?
+export type State =  (self: Stater) -> boolean?
 
 type self = {
     States: {State},
     Info: {any?},
     Tick: number?,
     Instance: Model?,
-    State: State,
+    State: string,
     StateConfirmation: boolean,
 
-    Changed: Signal | RBXScriptSignal,
-    StatusChange: Signal | RBXScriptSignal
+    Changed: Signal | RBXScriptSignal, -- ignore if this is underlined
+    StatusChanged: Signal | RBXScriptSignal -- ignore if this is underlined
 }
 
 export type Stater = typeof(setmetatable({} :: self, Stater))
@@ -62,7 +62,7 @@ export type Stater = typeof(setmetatable({} :: self, Stater))
     @param Tick -- Optional tick to be set.
     @param Instance -- Optional model to be set.
 ]=]
-function Stater.new(States: {(self) -> ()}, Tick: number?, Instance: Model?): Stater
+function Stater.new(States: State, Tick: number?, Instance: Model?): Stater
     assert(typeof(States) == "table", "Please provide a valid table with the states.")
 
     local self = setmetatable({}, Stater)
@@ -72,7 +72,6 @@ function Stater.new(States: {(self) -> ()}, Tick: number?, Instance: Model?): St
    self._Connections = {
        Main = nil
    }
-   self._CurrentState = nil
 
     -- Usable
     self.States = States
@@ -90,9 +89,11 @@ end
 
 --[=[
     Returns the current state the Stater is on indicated by a string. If none then nil.
+
+    @deprecated v0.2.1 -- You might want to use self.State instead.
 ]=]
 function Stater:GetCurrentState(): string | nil
-    return self._CurrentState
+    return self.State
 end
 
 --[=[
@@ -115,10 +116,9 @@ function Stater:SetState(State: string)
     local StateInStates = Option.Wrap(self.States[State])
 
     StateInStates:Match({
-        ["Some"] = function(Value)
-            self.State = Value
-            self.Changed:Fire(State, self._CurrentState)
-            self._CurrentState = State
+        ["Some"] = function(_)
+            self.Changed:Fire(State, self.State)
+            self.State = State
         end,
         ["None"] = function()
             error("No State with the given name.")
@@ -134,7 +134,6 @@ end
     @param State -- The function name inside States represented by a string, this state will be set at the start.
     @error "No State" -- Happens when no State is provided.
     @error "Already Started" -- Happens when the Stater has already started.
-    @error "Already Started" -- Happens when the Stater has already started.
 ]=]
 function Stater:Start(State: string)
     assert(type(State) == "string", "Please provide a state when starting.")
@@ -145,11 +144,12 @@ function Stater:Start(State: string)
     end
 
     self:SetState(State)
+    self.StatusChanged:Fire(true)
 
     self._Connections.Main = self._Trove:AddPromise(Promise.try(function()
         while true do
             task.wait(self.Tick)
-            local StateOption = Option.Wrap(self.State)
+            local StateOption = Option.Wrap(self.States[self.State])
 
             if StateOption:IsSome() then
                 local Result = Option.Wrap(StateOption:Unwrap()(self))
@@ -165,9 +165,9 @@ function Stater:Start(State: string)
             end
             StateOption = nil
         end
-    end))
-
-    self.StatusChanged:Fire(true)
+    end)):catch(function()
+        error("There was a problem starting, please try again.")
+    end)
 end
 
 --[=[

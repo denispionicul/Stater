@@ -38,7 +38,7 @@ return function()
 			expect(function()
 				StaterObject:SetState("Hi")
 			end).never.to.throw()
-			expect(StaterObject.State).to.equal(StaterObject.States.Hi)
+			expect(StaterObject.State).to.equal("Hi")
 		end)
 	end)
 
