@@ -25,6 +25,14 @@ end
 
 local States = {}
 
+function States.ChasingEnd(self)
+    print("Chasing ended.")
+end
+
+function States.ChasingStart(self)
+    print("Chasing Start Ran.")
+end
+
 function States.Chasing(self)
     local Humanoid = GetHumanoid(self)
 
@@ -41,7 +49,7 @@ function States.Walking(self) -- You always get self (the Stater Object) as a fi
     local RandomVector = RandomizeVector()
 
     self.Info.Humanoid:MoveTo(self.Info.HumanoidRootPart.Position + RandomVector)
-    task.wait(2.5) -- delay the next action by 5 seconds
+    task.wait(2.5) -- delay the next action by 2.5 seconds
 
     local Humanoid = GetHumanoid(self)
 

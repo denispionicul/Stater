@@ -1,5 +1,5 @@
 --!nonstrict
--- Version 0.2.1
+-- Version 0.3.0
 
 -- Dependencies
 local Option = require(script.Parent:FindFirstChild("Option") or script.Option)
@@ -15,6 +15,14 @@ local Trove = require(script.Parent:FindFirstChild("Trove") or script.Trove)
 ]=]
 local Stater = {}
 Stater.__index = Stater
+
+function Stater:__tostring()
+    return "Stater"
+end
+
+function Stater:__eq(Val)
+    return type(Val) == "table" and getmetatable(Val) == Stater and tostring(Val) == "Stater"
+end
 
 -- Types
 --[=[
@@ -33,6 +41,8 @@ Stater.__index = Stater
     .StateConfirmation boolean -- If this is enabled, the state MUST return a boolean indicating if the function ran properly.
     .Changed Signal | RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
     .StatusChanged Signal | RBXScriptSignal -- Fired whenever the Stater starts or closes. Returns the current status as a boolean.
+    .StateRemoved Signal | RBXScriptSignal -- A signal that fires whenever a state is added via the Stater:AddState() method. Returns the State Name.
+    .StateAdded Signal | RBXScriptSignal -- A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.
 ]=]
 
 export type State =  (self: Stater) -> boolean?
@@ -46,7 +56,9 @@ type self = {
     StateConfirmation: boolean,
 
     Changed: Signal | RBXScriptSignal, -- ignore if this is underlined
-    StatusChanged: Signal | RBXScriptSignal -- ignore if this is underlined
+    StatusChanged: Signal | RBXScriptSignal, -- ignore if this is underlined
+    StateRemoved: Signal | RBXScriptSignal, -- ignore if this is underlined
+    StateAdded: Signal | RBXScriptSignal -- ignore if this is underlined
 }
 
 export type Stater = typeof(setmetatable({} :: self, Stater))
@@ -83,8 +95,51 @@ function Stater.new(States: State, Tick: number?, Instance: Model?): Stater
 
     self.Changed = self._Trove:Construct(Signal)
     self.StatusChanged = self._Trove:Construct(Signal)
+    self.StateRemoved = self._Trove:Construct(Signal)
+    self.StateAdded = self._Trove:Construct(Signal)
 
     return self
+end
+
+--[=[
+    Removes a state inside the states table.
+
+    @param Name -- The name of the removing state.
+]=]
+function Stater:RemoveState(Name: string)
+    assert(type(Name) == "string", "The name must be a string.")
+
+    local RemovingState = Option.Wrap(self.States[Name])
+
+    RemovingState:Match({
+        ["Some"] = function(Value)
+            Value = nil
+            self.States[Name] = nil
+            self.StateRemoved:Fire(Name)
+        end,
+        ["None"] = function()
+            warn("Given state " .. Name .. " does not exist.")
+        end
+    })
+end
+
+--[=[
+    Adds a state inside the states table. If there is a Start after the State name inside the States, that will play.
+    If there is a End after the State name inside the States, that will play after the state changes.
+
+    @param Name -- The name that the state will go by.
+    @param State -- The State function itself.
+    @error "Existing State" -- Happens when the name of the state is already inside the table.
+]=]
+function Stater:AddState(Name: string, State: State)
+    assert(type(Name) == "string", "The name must be a string.")
+    assert(type(State) == "function", "The State must be a function.")
+
+    local AlreadyExists = Option.Wrap(self.States[Name])
+    AlreadyExists:ExpectNone("There is already a State with that name, consider changing.")
+
+    self.States[Name] = State
+    self.StateAdded:Fire(Name)
 end
 
 --[=[
@@ -116,6 +171,11 @@ function Stater:SetState(State: string)
 
     StateInStates:Match({
         ["Some"] = function(_)
+            local StartOption = Option.Wrap(self.States[State .. "Start"])
+            local EndOption = Option.Wrap(self.States[(self.State or "") .. "End"])
+
+            StartOption:UnwrapOr(function(_) end)(self)
+            EndOption:UnwrapOr(function(_) end)(self)
             self.Changed:Fire(State, self.State)
             self.State = State
         end,
@@ -194,6 +254,5 @@ function Stater:Destroy()
     table.clear(self)
     self = nil
 end
-
 
 return Stater
