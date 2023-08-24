@@ -6,8 +6,8 @@
 <title data-rh="true">Stater | Stater</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://denispionicul.github.io/Stater/api/Stater"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="Stater | Stater"><meta data-rh="true" name="description" content="Stater is a finite state machine module with the purpose of easing the creation of ai and npcs in games,
 Stater was built with the intent of being used in module scripts."><meta data-rh="true" property="og:description" content="Stater is a finite state machine module with the purpose of easing the creation of ai and npcs in games,
 Stater was built with the intent of being used in module scripts."><link data-rh="true" rel="canonical" href="https://denispionicul.github.io/Stater/api/Stater"><link data-rh="true" rel="alternate" href="https://denispionicul.github.io/Stater/api/Stater" hreflang="en"><link data-rh="true" rel="alternate" href="https://denispionicul.github.io/Stater/api/Stater" hreflang="x-default"><link rel="stylesheet" href="/Stater/assets/css/styles.19a5646f.css">
-<link rel="preload" href="/Stater/assets/js/runtime~main.9f3c6634.js" as="script">
-<link rel="preload" href="/Stater/assets/js/main.4d16ffe0.js" as="script">
+<link rel="preload" href="/Stater/assets/js/runtime~main.d8860916.js" as="script">
+<link rel="preload" href="/Stater/assets/js/main.0f1ab30d.js" as="script">
 </head>
 <body class="navigation-with-keyboard">
 <script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
@@ -16,13 +16,13 @@ Stater was built with the intent of being used in module scripts."><link data-rh
   Stater is a finite state machine module with the purpose of easing the creation of ai and npcs in games,
   Stater was built with the intent of being used in module scripts.
 </p>
-</div></header><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="new"><code style="text-decoration:none">new</code><a href="#new" class="hash-link" aria-label="Direct link to new" title="Direct link to new">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L65"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->.</code><code class="green_DgR4">new</code><code>(</code><div class="inset_uKQm"><div><code>States<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#State">State</a></code><code>,</code><span class="inlineDescription_G7Er">-- <span>
+</div></header><h2 class="anchor anchorWithStickyNavbar_LWe7" id="types">Types<a href="#types" class="hash-link" aria-label="Direct link to Types" title="Direct link to Types">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="State"><code style="text-decoration:none">State</code><a href="#State" class="hash-link" aria-label="Direct link to State" title="Direct link to State">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L32"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code class="purple_ieR2">type</code> <code>State<!-- --> = </code> <code class="purple_ieR2">(</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#Stater">Stater</a></code><code class="purple_ieR2">)</code><code class="purple_ieR2"> → </code><code class="blue_P4bS">boolean?</code></div><div></div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="new"><code style="text-decoration:none">new</code><a href="#new" class="hash-link" aria-label="Direct link to new" title="Direct link to new">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L77"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->.</code><code class="green_DgR4">new</code><code>(</code><div class="inset_uKQm"><div><code>States<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#State">State</a></code><code>,</code><span class="inlineDescription_G7Er">-- <span>
 <p>The Table that will have all the States</p>
 </span></span></div><div><code>Tick<!-- -->: </code><code class="blue_P4bS">number?</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
 <p>Optional tick to be set.</p>
 </span></span></div><div><code>Instance<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/class/Model" target="_blank" rel="noopener noreferrer">Model?<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_G7Er">-- <span>
 <p>Optional model to be set.</p>
-</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#Stater">Stater</a></code></div><h3>Types</h3><h3 class="anchor anchorWithStickyNavbar_LWe7" id="State"><a href="#State" class="hash-link" aria-label="Direct link to State" title="Direct link to State">​</a></h3><div class="memberString_GwaU"><code class="purple_ieR2">type</code> <code>State<!-- --> = </code> <code class="purple_ieR2">(</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#Stater">Stater</a></code><code class="purple_ieR2">)</code><code class="purple_ieR2"> → </code><code class="blue_P4bS">boolean?</code></div><div></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Stater"><a href="#Stater" class="hash-link" aria-label="Direct link to Stater" title="Direct link to Stater">​</a></h3><div class="memberString_GwaU"><code class="purple_ieR2">interface</code> <code>Stater<!-- --> <!-- -->{</code><div class="inset_uKQm"><div><code>States<!-- -->: </code><code class="purple_ieR2">{</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#State">State</a></code><code class="purple_ieR2">}</code><span class="inlineDescription_G7Er">-- <span>
+</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#Stater">Stater</a></code></div><h3>Types</h3><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Stater"><a href="#Stater" class="hash-link" aria-label="Direct link to Stater" title="Direct link to Stater">​</a></h3><div class="memberString_GwaU"><code class="purple_ieR2">interface</code> <code>Stater<!-- --> <!-- -->{</code><div class="inset_uKQm"><div><code>States<!-- -->: </code><code class="purple_ieR2">{</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#State">State</a></code><code class="purple_ieR2">}</code><span class="inlineDescription_G7Er">-- <span>
 <p>The Provided States Table, if theres a "Init" state then that function will execute each time the Stater Starts.</p>
 </span></span></div><div><code>Info<!-- -->: </code><code class="purple_ieR2">{</code><code class="blue_P4bS">any?</code><code class="purple_ieR2">}</code><span class="inlineDescription_G7Er">-- <span>
 <p>A table that you can add anything in, this is more recommended than directly inserting variables inside the object.</p>
@@ -38,26 +38,43 @@ Stater was built with the intent of being used in module scripts."><link data-rh
 <p>A signal that fires whenever the State changes. Returns Current State and Previous State</p>
 </span></span></div><div><code>StatusChanged<!-- -->: </code><code class="blue_P4bS">Signal</code><code class="op_lSLc"> | </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/RBXScriptSignal" target="_blank" rel="noopener noreferrer">RBXScriptSignal<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_G7Er">-- <span>
 <p>Fired whenever the Stater starts or closes. Returns the current status as a boolean.</p>
+</span></span></div><div><code>StateRemoved<!-- -->: </code><code class="blue_P4bS">Signal</code><code class="op_lSLc"> | </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/RBXScriptSignal" target="_blank" rel="noopener noreferrer">RBXScriptSignal<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_G7Er">-- <span>
+<p>A signal that fires whenever a state is added via the Stater:AddState() method. Returns the State Name.</p>
+</span></span></div><div><code>StateAdded<!-- -->: </code><code class="blue_P4bS">Signal</code><code class="op_lSLc"> | </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/RBXScriptSignal" target="_blank" rel="noopener noreferrer">RBXScriptSignal<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><span class="inlineDescription_G7Er">-- <span>
+<p>A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.</p>
 </span></span></div></div><code>}</code></div><div></div><div>
 <p>Returns a new Stater Object.</p>
-</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;No States&quot;</td><td>Happens when no States are provided</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="GetCurrentState"><code style="text-decoration:none">GetCurrentState</code><a href="#GetCurrentState" class="hash-link" aria-label="Direct link to GetCurrentState" title="Direct link to GetCurrentState">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L94"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">GetCurrentState</code><code>(</code><code>) → </code><code class="blue_P4bS">string</code><code class="op_lSLc"> | </code><code class="blue_P4bS">nil</code></div><div>
+</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;No States&quot;</td><td>Happens when no States are provided</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="RemoveState"><code style="text-decoration:none">RemoveState</code><a href="#RemoveState" class="hash-link" aria-label="Direct link to RemoveState" title="Direct link to RemoveState">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L109"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">RemoveState</code><code>(</code><div class="inset_uKQm"><div><code>Name<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
+<p>The name of the removing state.</p>
+</span></span></div></div><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Removes a state inside the states table.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="AddState"><code style="text-decoration:none">AddState</code><a href="#AddState" class="hash-link" aria-label="Direct link to AddState" title="Direct link to AddState">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L134"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">AddState</code><code>(</code><div class="inset_uKQm"><div><code>Name<!-- -->: </code><code class="blue_P4bS">string</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
+<p>The name that the state will go by.</p>
+</span></span></div><div><code>State<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/Stater/api/Stater#State">State</a></code><span class="inlineDescription_G7Er">-- <span>
+<p>The State function itself.</p>
+</span></span></div></div><code>) → </code><code>(</code><code>)</code></div><div>
+<p>
+  Adds a state inside the states table. If there is a Start after the State name inside the States, that will play.
+  If there is a End after the State name inside the States, that will play after the state changes.
+</p>
+</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;Existing State&quot;</td><td>Happens when the name of the state is already inside the table.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="GetCurrentState"><code style="text-decoration:none">GetCurrentState</code><a href="#GetCurrentState" class="hash-link" aria-label="Direct link to GetCurrentState" title="Direct link to GetCurrentState">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L149"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">GetCurrentState</code><code>(</code><code>) → </code><code class="blue_P4bS">string</code><code class="op_lSLc"> | </code><code class="blue_P4bS">nil</code></div><div>
 <p>
   Returns the current state the Stater is on indicated by a string. If none then nil.
   This is currently the same as self.State.
 </p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="IsWorking"><code style="text-decoration:none">IsWorking</code><a href="#IsWorking" class="hash-link" aria-label="Direct link to IsWorking" title="Direct link to IsWorking">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L101"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">IsWorking</code><code>(</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="IsWorking"><code style="text-decoration:none">IsWorking</code><a href="#IsWorking" class="hash-link" aria-label="Direct link to IsWorking" title="Direct link to IsWorking">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L156"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">IsWorking</code><code>(</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
 <p>Returns a boolean indicating if the State currently is on.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="SetState"><code style="text-decoration:none">SetState</code><a href="#SetState" class="hash-link" aria-label="Direct link to SetState" title="Direct link to SetState">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L112"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">SetState</code><code>(</code><div class="inset_uKQm"><div><code>State<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="SetState"><code style="text-decoration:none">SetState</code><a href="#SetState" class="hash-link" aria-label="Direct link to SetState" title="Direct link to SetState">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L167"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">SetState</code><code>(</code><div class="inset_uKQm"><div><code>State<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
 <p>The function name inside States represented by a string</p>
 </span></span></div></div><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Returns a boolean indicating if the State currently is on.</p>
-</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;No State&quot;</td><td>Happens when no State is provided.</td></tr><tr><td>&quot;Invalid State&quot;</td><td>Happens when the state provided doesn&#x27;t exist.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Start"><code style="text-decoration:none">Start</code><a href="#Start" class="hash-link" aria-label="Direct link to Start" title="Direct link to Start">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L137"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">Start</code><code>(</code><div class="inset_uKQm"><div><code>State<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
+</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;No State&quot;</td><td>Happens when no State is provided.</td></tr><tr><td>&quot;Invalid State&quot;</td><td>Happens when the state provided doesn&#x27;t exist.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Start"><code style="text-decoration:none">Start</code><a href="#Start" class="hash-link" aria-label="Direct link to Start" title="Direct link to Start">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L197"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">Start</code><code>(</code><div class="inset_uKQm"><div><code>State<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
 <p>The function name inside States represented by a string, this state will be set at the start.</p>
 </span></span></div></div><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Begins the Stater</p>
-</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;No State&quot;</td><td>Happens when no State is provided.</td></tr><tr><td>&quot;Already Started&quot;</td><td>Happens when the Stater has already started.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Stop"><code style="text-decoration:none">Stop</code><a href="#Stop" class="hash-link" aria-label="Direct link to Stop" title="Direct link to Stop">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L177"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">Stop</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;No State&quot;</td><td>Happens when no State is provided.</td></tr><tr><td>&quot;Already Started&quot;</td><td>Happens when the Stater has already started.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Stop"><code style="text-decoration:none">Stop</code><a href="#Stop" class="hash-link" aria-label="Direct link to Stop" title="Direct link to Stop">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L237"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">Stop</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Stops the stater and its state.</p>
-</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;Already Stopped&quot;</td><td>Happens when the Stater has already been stopped.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Destroy"><code style="text-decoration:none">Destroy</code><a href="#Destroy" class="hash-link" aria-label="Direct link to Destroy" title="Direct link to Destroy">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L192"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">Destroy</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>&quot;Already Stopped&quot;</td><td>Happens when the Stater has already been stopped.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Destroy"><code style="text-decoration:none">Destroy</code><a href="#Destroy" class="hash-link" aria-label="Direct link to Destroy" title="Direct link to Destroy">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/denispionicul/Stater/blob/src/src/init.lua#L252"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Stater<!-- -->:</code><code class="green_DgR4">Destroy</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Gets rid of the Stater Object.</p>
 </div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
     &quot;functions&quot;: [
@@ -95,7 +112,52 @@ Stater was built with the intent of being used in module scripts."><link data-rh
                 }
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 65,
+                &quot;line&quot;: 77,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;RemoveState&quot;,
+            &quot;desc&quot;: &quot;Removes a state inside the states table.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Name&quot;,
+                    &quot;desc&quot;: &quot;The name of the removing state.&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 109,
+                &quot;path&quot;: &quot;src/init.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;AddState&quot;,
+            &quot;desc&quot;: &quot;Adds a state inside the states table. If there is a Start after the State name inside the States, that will play.\nIf there is a End after the State name inside the States, that will play after the state changes.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;Name&quot;,
+                    &quot;desc&quot;: &quot;The name that the state will go by.&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;State&quot;,
+                    &quot;desc&quot;: &quot;The State function itself.&quot;,
+                    &quot;lua_type&quot;: &quot;State&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;\&quot;Existing State\&quot;&quot;,
+                    &quot;desc&quot;: &quot;Happens when the name of the state is already inside the table.&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 134,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         },
@@ -111,7 +173,7 @@ Stater was built with the intent of being used in module scripts."><link data-rh
             ],
             &quot;function_type&quot;: &quot;method&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 94,
+                &quot;line&quot;: 149,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         },
@@ -127,7 +189,7 @@ Stater was built with the intent of being used in module scripts."><link data-rh
             ],
             &quot;function_type&quot;: &quot;method&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 101,
+                &quot;line&quot;: 156,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         },
@@ -154,7 +216,7 @@ Stater was built with the intent of being used in module scripts."><link data-rh
                 }
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 112,
+                &quot;line&quot;: 167,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         },
@@ -181,7 +243,7 @@ Stater was built with the intent of being used in module scripts."><link data-rh
                 }
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 137,
+                &quot;line&quot;: 197,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         },
@@ -198,7 +260,7 @@ Stater was built with the intent of being used in module scripts."><link data-rh
                 }
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 177,
+                &quot;line&quot;: 237,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         },
@@ -209,7 +271,7 @@ Stater was built with the intent of being used in module scripts."><link data-rh
             &quot;returns&quot;: [],
             &quot;function_type&quot;: &quot;method&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 192,
+                &quot;line&quot;: 252,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         }
@@ -221,7 +283,7 @@ Stater was built with the intent of being used in module scripts."><link data-rh
             &quot;desc&quot;: &quot;&quot;,
             &quot;lua_type&quot;: &quot;(Stater) -&gt; boolean?&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 24,
+                &quot;line&quot;: 32,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         },
@@ -268,10 +330,20 @@ Stater was built with the intent of being used in module scripts."><link data-rh
                     &quot;name&quot;: &quot;StatusChanged&quot;,
                     &quot;lua_type&quot;: &quot;Signal | RBXScriptSignal&quot;,
                     &quot;desc&quot;: &quot;Fired whenever the Stater starts or closes. Returns the current status as a boolean.&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;StateRemoved&quot;,
+                    &quot;lua_type&quot;: &quot;Signal | RBXScriptSignal&quot;,
+                    &quot;desc&quot;: &quot;A signal that fires whenever a state is added via the Stater:AddState() method. Returns the State Name.&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;StateAdded&quot;,
+                    &quot;lua_type&quot;: &quot;Signal | RBXScriptSignal&quot;,
+                    &quot;desc&quot;: &quot;A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.&quot;
                 }
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 37,
+                &quot;line&quot;: 47,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         }
@@ -282,8 +354,8 @@ Stater was built with the intent of being used in module scripts."><link data-rh
         &quot;line&quot;: 16,
         &quot;path&quot;: &quot;src/init.lua&quot;
     }
-}</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#State" class="table-of-contents__link toc-highlight">State</a></li><li><a href="#Stater" class="table-of-contents__link toc-highlight">Stater</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#Destroy" class="table-of-contents__link toc-highlight">:Destroy</a></li><li><a href="#GetCurrentState" class="table-of-contents__link toc-highlight">:GetCurrentState</a></li><li><a href="#IsWorking" class="table-of-contents__link toc-highlight">:IsWorking</a></li><li><a href="#SetState" class="table-of-contents__link toc-highlight">:SetState</a></li><li><a href="#Start" class="table-of-contents__link toc-highlight">:Start</a></li><li><a href="#Stop" class="table-of-contents__link toc-highlight">:Stop</a></li><li><a href="#new" class="table-of-contents__link toc-highlight">.new</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2023 denispionicul. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
-<script src="/Stater/assets/js/runtime~main.9f3c6634.js"></script>
-<script src="/Stater/assets/js/main.4d16ffe0.js"></script>
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#State" class="table-of-contents__link toc-highlight">State</a></li><li><a href="#Stater" class="table-of-contents__link toc-highlight">Stater</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#AddState" class="table-of-contents__link toc-highlight">:AddState</a></li><li><a href="#Destroy" class="table-of-contents__link toc-highlight">:Destroy</a></li><li><a href="#GetCurrentState" class="table-of-contents__link toc-highlight">:GetCurrentState</a></li><li><a href="#IsWorking" class="table-of-contents__link toc-highlight">:IsWorking</a></li><li><a href="#RemoveState" class="table-of-contents__link toc-highlight">:RemoveState</a></li><li><a href="#SetState" class="table-of-contents__link toc-highlight">:SetState</a></li><li><a href="#Start" class="table-of-contents__link toc-highlight">:Start</a></li><li><a href="#Stop" class="table-of-contents__link toc-highlight">:Stop</a></li><li><a href="#new" class="table-of-contents__link toc-highlight">.new</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2023 denispionicul. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/Stater/assets/js/runtime~main.d8860916.js"></script>
+<script src="/Stater/assets/js/main.0f1ab30d.js"></script>
 </body>
 </html>
