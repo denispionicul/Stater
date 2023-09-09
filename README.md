@@ -12,7 +12,7 @@ There are 4 **main** ways to download Stater:
 
 * Add it to your [Wally](https://wally.run/) dependencies.
 ```
-denispionicul/stater@0.3.0
+denispionicul/stater@0.4.0
 ```
 * Get the Roblox file in [Releases](https://github.com/denispionicul/Stater/releases) and add it in your Roblox Studio.
 
