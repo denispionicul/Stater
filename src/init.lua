@@ -36,7 +36,7 @@ end
     .States {State} -- The Provided States Table, if theres a "Init" state then that function will execute each time the Stater Starts.
     .Info {any?} -- A table that you can add anything in, this is more recommended than directly inserting variables inside the object.
     .Tick number? -- The time it takes for the current state to be called again after a function is done. Default is 0
-    .Return any -- This is the thing that returns as the first parameter of every single state. Default is the Stater instance itself.
+    .Return any -- This is the thing that returns as the first parameter of every single state. Default is the Stater object itself.
     .State State -- The current state that the Stater is on.
     .StateConfirmation boolean -- If this is enabled, the state MUST return a boolean indicating if the function ran properly.
     .Changed Signal | RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
@@ -71,7 +71,7 @@ export type Stater = typeof(setmetatable({} :: self, Stater))
     @error "No States" -- Happens when no States are provided
     @param States -- The Table that will have all the States
     @param Tick -- Optional tick to be set.
-    @param Instance -- Optional model to be set.
+    @param Return -- Determines what to return in the first parameter of each state.
 ]=]
 function Stater.new(States: State, Tick: number?, Return: any?): Stater
 	assert(typeof(States) == "table", "Please provide a valid table with the states.")
@@ -87,7 +87,6 @@ function Stater.new(States: State, Tick: number?, Return: any?): Stater
 	-- Usable
 	self.States = States
 	self.Info = {}
-	self.Instance = Instance
 	self.Tick = Tick or 0
 	self.State = nil
 	self.StateConfirmation = false
