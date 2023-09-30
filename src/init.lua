@@ -1,5 +1,5 @@
 --!nonstrict
--- Version 0.4.0
+-- Version 0.5.0
 
 -- Dependencies
 local Option = require(script.Parent:FindFirstChild("Option") or script.Option)
@@ -36,7 +36,7 @@ end
     .States {State} -- The Provided States Table, if theres a "Init" state then that function will execute each time the Stater Starts.
     .Info {any?} -- A table that you can add anything in, this is more recommended than directly inserting variables inside the object.
     .Tick number? -- The time it takes for the current state to be called again after a function is done. Default is 0
-    .Instance Model? -- Optional model for when you don't want to do self.Info.Instance. Default is nil.
+    .Return any -- This is the thing that returns as the first parameter of every single state. Default is the Stater instance itself.
     .State State -- The current state that the Stater is on.
     .StateConfirmation boolean -- If this is enabled, the state MUST return a boolean indicating if the function ran properly.
     .Changed Signal | RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
@@ -51,7 +51,7 @@ type self = {
 	States: { State },
 	Info: { any? },
 	Tick: number?,
-	Instance: Model?,
+	Return: any,
 	State: string,
 	StateConfirmation: boolean,
 
@@ -73,7 +73,7 @@ export type Stater = typeof(setmetatable({} :: self, Stater))
     @param Tick -- Optional tick to be set.
     @param Instance -- Optional model to be set.
 ]=]
-function Stater.new(States: State, Tick: number?, Instance: Model?): Stater
+function Stater.new(States: State, Tick: number?, Return: any?): Stater
 	assert(typeof(States) == "table", "Please provide a valid table with the states.")
 
 	local self = setmetatable({}, Stater)
@@ -91,6 +91,7 @@ function Stater.new(States: State, Tick: number?, Instance: Model?): Stater
 	self.Tick = Tick or 0
 	self.State = nil
 	self.StateConfirmation = false
+	self.Return = Return or self
 
 	self.Changed = self._Trove:Construct(Signal)
 	self.StatusChanged = self._Trove:Construct(Signal)
@@ -211,7 +212,7 @@ function Stater:Start(State: string)
 				local StateOption = Option.Wrap(self.States[self.State])
 
 				if StateOption:IsSome() then
-					local Result = Option.Wrap(StateOption:Unwrap()(self))
+					local Result = Option.Wrap(StateOption:Unwrap()(self.Return))
 
 					if self.StateConfirmation and (Result:IsNone() or Result:Contains(false)) then
 						warn("State returned false or nil, stopping...")

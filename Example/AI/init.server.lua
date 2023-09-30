@@ -11,7 +11,7 @@ HumanoidRootPart:SetNetworkOwner(nil)
 local Stater = require(script.Stater)
 local States = require(script.States)
 
-local AI = Stater.new(States, 0.5, Model)
+local AI = Stater.new(States, 0.5)
 AI.Info.Humanoid = Humanoid
 AI.Info.HumanoidRootPart = HumanoidRootPart
 AI.StateConfirmation = false -- if this is enabled, all states must return a boolean.

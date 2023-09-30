@@ -5,7 +5,7 @@ registry = "test"
 [[package]]
 name = "denispionicul/stater"
 version = "0.1.0"
-dependencies = [["Option", "sleitnick/option@1.0.4"], ["Promise", "evaera/promise@4.0.0"], ["Signal", "sleitnick/signal@1.5.0"], ["TestEZ", "roblox/testez@0.4.1"], ["Trove", "sleitnick/trove@1.0.0"]]
+dependencies = [["Option", "sleitnick/option@1.0.4"], ["Promise", "evaera/promise@4.0.0"], ["Signal", "sleitnick/signal@1.5.0"], ["TestEZ", "roblox/testez@0.4.1"], ["Trove", "sleitnick/trove@1.0.1"]]
 
 [[package]]
 name = "evaera/promise"
@@ -29,5 +29,5 @@ dependencies = []
 
 [[package]]
 name = "sleitnick/trove"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = []
