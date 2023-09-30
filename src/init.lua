@@ -33,7 +33,7 @@ end
 --[=[
     @interface Stater
     @within Stater
-    .States {State} -- The Provided States Table, if theres a "Init" state then that function will execute each time the Stater Starts.
+    .States {[string]: State} -- The Provided States Table, if theres a "Init" state then that function will execute each time the Stater Starts.
     .Info {any?} -- A table that you can add anything in, this is more recommended than directly inserting variables inside the object.
     .Tick number? -- The time it takes for the current state to be called again after a function is done. Default is 0
     .Return any -- This is the thing that returns as the first parameter of every single state. Default is the Stater object itself.
@@ -45,10 +45,10 @@ end
     .StateAdded Signal | RBXScriptSignal -- A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.
 ]=]
 
-export type State = (self: Stater) -> boolean?
+export type State = (Return: any | self) -> boolean?
 
 type self = {
-	States: { State },
+	States: {[string]: State},
 	Info: { any? },
 	Tick: number?,
 	Return: any,
@@ -73,7 +73,7 @@ export type Stater = typeof(setmetatable({} :: self, Stater))
     @param Tick -- Optional tick to be set.
     @param Return -- Determines what to return in the first parameter of each state.
 ]=]
-function Stater.new(States: State, Tick: number?, Return: any?): Stater
+function Stater.new(States: {[string]: State}, Tick: number?, Return: any?): Stater
 	assert(typeof(States) == "table", "Please provide a valid table with the states.")
 
 	local self = setmetatable({}, Stater)
