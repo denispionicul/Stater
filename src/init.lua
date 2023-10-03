@@ -1,5 +1,5 @@
 --!nonstrict
--- Version 0.5.0
+-- Version 0.5.1
 
 -- Dependencies
 local Option = require(script.Parent:FindFirstChild("Option") or script.Option)
@@ -173,8 +173,8 @@ function Stater:SetState(State: string)
 			local StartOption = Option.Wrap(self.States[State .. "Start"])
 			local EndOption = Option.Wrap(self.States[tostring(self.State) .. "End"])
 
-			StartOption:UnwrapOr(function(_) end)(self)
-			EndOption:UnwrapOr(function(_) end)(self)
+			StartOption:UnwrapOr(function(_) end)(self.Return)
+			EndOption:UnwrapOr(function(_) end)(self.Return)
 			self.Changed:Fire(State, self.State)
 			self.State = State
 		end,
@@ -198,7 +198,7 @@ function Stater:Start(State: string)
 	assert(self._Connections.Main == nil, "You cannot start twice.")
 
 	if self.States["Init"] then
-		self.States["Init"](self)
+		self.States["Init"](self.Return)
 	end
 
 	self:SetState(State)
@@ -246,8 +246,8 @@ function Stater:Stop()
 	self._Connections.Main = nil
 	self.State = nil
 
-	StopOption:UnwrapOr(function(_) end)(self)
-	EndOption:UnwrapOr(function(_) end)(self)
+	StopOption:UnwrapOr(function(_) end)(self.Return)
+	EndOption:UnwrapOr(function(_) end)(self.Return)
 
 	self.StatusChanged:Fire(false)
 end
