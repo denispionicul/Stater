@@ -1,5 +1,5 @@
 --!nonstrict
--- Version 0.5.1
+-- Version 0.5.2
 
 -- Dependencies
 local Option = require(script.Parent:FindFirstChild("Option") or script.Option)
@@ -17,16 +17,16 @@ local Stater = {}
 Stater.__index = Stater
 
 function Stater:__tostring()
-	return "Stater"
+    return "Stater"
 end
 
 function Stater:__eq(Val)
-	return type(Val) == "table" and getmetatable(Val) == Stater and tostring(Val) == "Stater"
+    return type(Val) == "table" and getmetatable(Val) == Stater and tostring(Val) == "Stater"
 end
 
 -- Types
 --[=[
-    @type State (Stater) -> boolean?
+    @type State (Stater | any) -> boolean?
     @within Stater
 ]=]
 
@@ -39,31 +39,73 @@ end
     .Return any -- This is the thing that returns as the first parameter of every single state. Default is the Stater object itself.
     .State State -- The current state that the Stater is on.
     .StateConfirmation boolean -- If this is enabled, the state MUST return a boolean indicating if the function ran properly.
-    .Changed Signal | RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
-    .StatusChanged Signal | RBXScriptSignal -- Fired whenever the Stater starts or closes. Returns the current status as a boolean.
-    .StateRemoved Signal | RBXScriptSignal -- A signal that fires whenever a state is added via the Stater:AddState() method. Returns the State Name.
-    .StateAdded Signal | RBXScriptSignal -- A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.
+    .Changed<string, string> Signal | RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
+    .StatusChanged Signal<boolean> | RBXScriptSignal -- Fired whenever the Stater starts or closes. Returns the current status as a boolean.
+    .StateRemoved Signal<string> | RBXScriptSignal -- A signal that fires whenever a state is added via the Stater:AddState() method. Returns the State Name.
+    .StateAdded Signal<string> | RBXScriptSignal -- A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.
 ]=]
 
-export type State = (Return: any | self) -> boolean?
+export type State = (Return: any | Stater) -> boolean?
 
-type self = {
-	States: {[string]: State},
-	Info: { any? },
-	Tick: number?,
-	Return: any,
-	State: string,
-	StateConfirmation: boolean,
+export type Stater = {
+    States: {[string]: State},
+    Info: { any? },
+    Tick: number?,
+    Return: any,
+    State: string,
+    StateConfirmation: boolean,
 
-	Changed: Signal | RBXScriptSignal, -- ignore if this is underlined
-	StatusChanged: Signal | RBXScriptSignal, -- ignore if this is underlined
-	StateRemoved: Signal | RBXScriptSignal, -- ignore if this is underlined
-	StateAdded: Signal | RBXScriptSignal, -- ignore if this is underlined
+    Changed: Signal.Signal<string, string> | RBXScriptSignal, -- ignore if this is underlined
+    StatusChanged: Signal.Signal<boolean> | RBXScriptSignal, -- ignore if this is underlined
+    StateRemoved: Signal.Signal<string> | RBXScriptSignal, -- ignore if this is underlined
+    StateAdded: Signal.Signal<string> | RBXScriptSignal, -- ignore if this is underlined
+
+    RemoveState: (self: Stater, Name: string) -> nil,
+    AddState: (self: Stater, Name: string, State: State) -> nil,
+    GetCurrentState: (self: Stater) -> string?,
+    IsWorking: (self: Stater) -> boolean,
+    SetState: (self: Stater, Name: string) -> nil,
+    Start: (self: Stater, StartingState: string) -> nil,
+    Stop: (self: Stater) -> nil,
+    Destroy: (self: Stater) -> nil
 }
 
-export type Stater = typeof(setmetatable({} :: self, Stater))
-
 -- Functions
+
+local function GetStates(Table: {[string]: State}, Origin: {[string]: State}?)
+    local ExtractedStates = Origin or {}
+
+    for Key, State in Table do
+        local Type = type(State)
+
+        if Type == "table" then
+            GetStates(State, ExtractedStates)
+        elseif Type == "function" then
+            ExtractedStates[Key] = State
+        end
+    end
+
+    return ExtractedStates
+end
+
+local function GetStatesTable(Search: Instance | {[string]: State})
+    local SearchType = type(Search)
+
+    if SearchType ~= "table" then
+        local Children = Search:GetChildren()
+        local Modules = {}
+
+        for _, Module: ModuleScript in Children do
+            if Module:IsA("ModuleScript") then
+                table.insert(require(Module), Modules)
+            end
+        end
+
+        Search = Modules
+    end
+
+    return GetStates(Search)
+end
 
 --[=[
     Returns a new Stater Object.
@@ -73,31 +115,32 @@ export type Stater = typeof(setmetatable({} :: self, Stater))
     @param Tick -- Optional tick to be set.
     @param Return -- Determines what to return in the first parameter of each state.
 ]=]
-function Stater.new(States: {[string]: State}, Tick: number?, Return: any?): Stater
-	assert(typeof(States) == "table", "Please provide a valid table with the states.")
+function Stater.new(States: {[string]: State} | Instance, Tick: number?, Return: any?): Stater
+    local StatesType = typeof(States)
+    assert(StatesType == "table" or StatesType == "Instance", "Please provide a valid table with the states.")
 
-	local self = setmetatable({}, Stater)
+    local self = setmetatable({}, Stater)
 
-	-- Non Usable
-	self._Trove = Trove.new()
-	self._Connections = {
-		Main = nil,
-	}
+    -- Non Usable
+    self._Trove = Trove.new()
+    self._Connections = {
+        Main = nil,
+    }
 
-	-- Usable
-	self.States = States
-	self.Info = {}
-	self.Tick = Tick or 0
-	self.State = nil
-	self.StateConfirmation = false
-	self.Return = Return or self
+    -- Usable
+    self.States = GetStatesTable(States)
+    self.Info = {}
+    self.Tick = Tick or 0
+    self.State = nil
+    self.StateConfirmation = false
+    self.Return = Return or self
 
-	self.Changed = self._Trove:Construct(Signal)
-	self.StatusChanged = self._Trove:Construct(Signal)
-	self.StateRemoved = self._Trove:Construct(Signal)
-	self.StateAdded = self._Trove:Construct(Signal)
+    self.Changed = self._Trove:Construct(Signal)
+    self.StatusChanged = self._Trove:Construct(Signal)
+    self.StateRemoved = self._Trove:Construct(Signal)
+    self.StateAdded = self._Trove:Construct(Signal)
 
-	return self
+    return self
 end
 
 --[=[
@@ -106,20 +149,20 @@ end
     @param Name -- The name of the removing state.
 ]=]
 function Stater:RemoveState(Name: string)
-	assert(type(Name) == "string", "The name must be a string.")
+    assert(type(Name) == "string", "The name must be a string.")
 
-	local RemovingState = Option.Wrap(self.States[Name])
+    local RemovingState = Option.Wrap(self.States[Name])
 
-	RemovingState:Match({
-		["Some"] = function(Value)
-			Value = nil
-			self.States[Name] = nil
-			self.StateRemoved:Fire(Name)
-		end,
-		["None"] = function()
-			warn("Given state " .. Name .. " does not exist.")
-		end,
-	})
+    RemovingState:Match({
+        ["Some"] = function(Value)
+            Value = nil
+            self.States[Name] = nil
+            self.StateRemoved:Fire(Name)
+        end,
+        ["None"] = function()
+            warn("Given state " .. Name .. " does not exist.")
+        end,
+    })
 end
 
 --[=[
@@ -131,29 +174,29 @@ end
     @error "Existing State" -- Happens when the name of the state is already inside the table.
 ]=]
 function Stater:AddState(Name: string, State: State)
-	assert(type(Name) == "string", "The name must be a string.")
-	assert(type(State) == "function", "The State must be a function.")
+    assert(type(Name) == "string", "The name must be a string.")
+    assert(type(State) == "function", "The State must be a function.")
 
-	local AlreadyExists = Option.Wrap(self.States[Name])
-	AlreadyExists:ExpectNone("There is already a State with that name, consider changing.")
+    local AlreadyExists = Option.Wrap(self.States[Name])
+    AlreadyExists:ExpectNone("There is already a State with that name, consider changing.")
 
-	self.States[Name] = State
-	self.StateAdded:Fire(Name)
+    self.States[Name] = State
+    self.StateAdded:Fire(Name)
 end
 
 --[=[
     Returns the current state the Stater is on indicated by a string. If none then nil.
     This is currently the same as self.State.
 ]=]
-function Stater:GetCurrentState(): string | nil
-	return self.State
+function Stater:GetCurrentState(): string?
+    return self.State
 end
 
 --[=[
     Returns a boolean indicating if the State currently is on.
 ]=]
 function Stater:IsWorking(): boolean
-	return self._Connections.Main ~= nil
+    return self._Connections.Main ~= nil
 end
 
 --[=[
@@ -164,26 +207,26 @@ end
     @error "Invalid State" -- Happens when the state provided doesn't exist.
 ]=]
 function Stater:SetState(State: string)
-	assert(type(State) == "string", "Please provide a state when setting.")
+    assert(type(State) == "string", "Please provide a state when setting.")
 
-	local StateInStates = Option.Wrap(self.States[State])
+    local StateInStates = Option.Wrap(self.States[State])
 
-	StateInStates:Match({
-		["Some"] = function(_)
-			local StartOption = Option.Wrap(self.States[State .. "Start"])
-			local EndOption = Option.Wrap(self.States[tostring(self.State) .. "End"])
+    StateInStates:Match({
+        ["Some"] = function(_)
+            local StartOption = Option.Wrap(self.States[State .. "Start"])
+            local EndOption = Option.Wrap(self.States[tostring(self.State) .. "End"])
 
-			StartOption:UnwrapOr(function(_) end)(self.Return)
-			EndOption:UnwrapOr(function(_) end)(self.Return)
-			self.Changed:Fire(State, self.State)
-			self.State = State
-		end,
-		["None"] = function()
-			error("No State with the given name.")
-		end,
-	})
+            StartOption:UnwrapOr(function(_) end)(self.Return)
+            EndOption:UnwrapOr(function(_) end)(self.Return)
+            self.Changed:Fire(State, self.State)
+            self.State = State
+        end,
+        ["None"] = function()
+            error("No State with the given name.")
+        end,
+    })
 
-	StateInStates = nil
+    StateInStates = nil
 end
 
 --[=[
@@ -193,41 +236,41 @@ end
     @error "No State" -- Happens when no State is provided.
     @error "Already Started" -- Happens when the Stater has already started.
 ]=]
-function Stater:Start(State: string)
-	assert(type(State) == "string", "Please provide a state when starting.")
-	assert(self._Connections.Main == nil, "You cannot start twice.")
+function Stater:Start(StartingState: string)
+    assert(type(StartingState) == "string", "Please provide a state when starting.")
+    assert(self._Connections.Main == nil, "You cannot start twice.")
 
-	if self.States["Init"] then
-		self.States["Init"](self.Return)
-	end
+    if self.States["Init"] then
+        self.States["Init"](self.Return)
+    end
 
-	self:SetState(State)
-	self.StatusChanged:Fire(true)
+    self:SetState(StartingState)
+    self.StatusChanged:Fire(true)
 
-	self._Connections.Main = self._Trove
-		:AddPromise(Promise.try(function()
-			while true do
-				task.wait(self.Tick)
-				local StateOption = Option.Wrap(self.States[self.State])
+    self._Connections.Main = self._Trove
+        :AddPromise(Promise.try(function()
+            while true do
+                task.wait(self.Tick)
+                local StateOption = Option.Wrap(self.States[self.State])
 
-				if StateOption:IsSome() then
-					local Result = Option.Wrap(StateOption:Unwrap()(self.Return))
+                if StateOption:IsSome() then
+                    local Result = Option.Wrap(StateOption:Unwrap()(self.Return))
 
-					if self.StateConfirmation and (Result:IsNone() or Result:Contains(false)) then
-						warn("State returned false or nil, stopping...")
-						self:Stop()
-					end
+                    if self.StateConfirmation and (Result:IsNone() or Result:Contains(false)) then
+                        warn("State returned false or nil, stopping...")
+                        self:Stop()
+                    end
 
-					Result = nil
-				else
-					warn("Current State is not set, Please consider setting a state.")
-				end
-				StateOption = nil
-			end
-		end))
-		:catch(function()
-			error("There was a problem starting, please try again.")
-		end)
+                    Result = nil
+                else
+                    warn("Current State is not set, Please consider setting a state.")
+                end
+                StateOption = nil
+            end
+        end))
+        :catch(function()
+            error("There was a problem starting, please try again.")
+        end)
 end
 
 --[=[
@@ -236,29 +279,29 @@ end
     @error "Already Stopped" -- Happens when the Stater has already been stopped.
 ]=]
 function Stater:Stop()
-	assert(self._Connections.Main ~= nil, "You cannot stop twice.")
+    assert(self._Connections.Main ~= nil, "You cannot stop twice.")
 
-	local StopOption = Option.Wrap(self.States.End)
-	local EndOption = Option.Wrap(self.States[tostring(self.State) .. "End"])
+    local StopOption = Option.Wrap(self.States.End)
+    local EndOption = Option.Wrap(self.States[tostring(self.State) .. "End"])
 
-	self._Trove:Remove(self._Connections.Main)
-	self._Connections.Main:cancel()
-	self._Connections.Main = nil
-	self.State = nil
+    self._Trove:Remove(self._Connections.Main)
+    self._Connections.Main:cancel()
+    self._Connections.Main = nil
+    self.State = nil
 
-	StopOption:UnwrapOr(function(_) end)(self.Return)
-	EndOption:UnwrapOr(function(_) end)(self.Return)
+    StopOption:UnwrapOr(function(_) end)(self.Return)
+    EndOption:UnwrapOr(function(_) end)(self.Return)
 
-	self.StatusChanged:Fire(false)
+    self.StatusChanged:Fire(false)
 end
 
 --[=[
     Gets rid of the Stater Object.
 ]=]
 function Stater:Destroy()
-	self._Trove:Destroy()
-	table.clear(self)
-	self = nil
+    self._Trove:Destroy()
+    table.clear(self)
+    self = nil
 end
 
 return Stater
