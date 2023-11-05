@@ -1,5 +1,6 @@
 -- very basic state demonstration.
 local RNG = Random.new()
+local Stater = require(script.Parent.Stater)
 
 local function RandomizeVector(): Vector3
     return Vector3.new(RNG:NextInteger(-10, 10), 0, RNG:NextInteger(-10, 10))
@@ -23,7 +24,7 @@ local function GetHumanoid(self): Humanoid
     end
 end
 
-local States = {}
+local States: {Stater.State} = {}
 
 function States.ChasingEnd(self)
     print("Chasing ended.")

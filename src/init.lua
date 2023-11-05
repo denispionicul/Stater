@@ -1,5 +1,5 @@
 --!nonstrict
--- Version 0.5.2
+-- Version 0.5.3
 
 -- Dependencies
 local Option = require(script.Parent:FindFirstChild("Option") or script.Option)
@@ -39,73 +39,36 @@ end
     .Return any -- This is the thing that returns as the first parameter of every single state. Default is the Stater object itself.
     .State State -- The current state that the Stater is on.
     .StateConfirmation boolean -- If this is enabled, the state MUST return a boolean indicating if the function ran properly.
-    .Changed<string, string> Signal | RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
-    .StatusChanged Signal<boolean> | RBXScriptSignal -- Fired whenever the Stater starts or closes. Returns the current status as a boolean.
-    .StateRemoved Signal<string> | RBXScriptSignal -- A signal that fires whenever a state is added via the Stater:AddState() method. Returns the State Name.
-    .StateAdded Signal<string> | RBXScriptSignal -- A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.
+    .Changed RBXScriptSignal -- A signal that fires whenever the State changes. Returns Current State and Previous State
+    .StatusChanged RBXScriptSignal -- Fired whenever the Stater starts or closes. Returns the current status as a boolean.
+    .StateRemoved RBXScriptSignal -- A signal that fires whenever a state is added via the Stater:AddState() method. Returns the State Name.
+    .StateAdded RBXScriptSignal -- A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.
 ]=]
 
-export type State = (Return: any | Stater) -> boolean?
+type State<T> = (self: T) -> boolean?
 
-export type Stater = {
-    States: {[string]: State},
+export type Stater<T> = {
+    States: {[string]: State<T>},
     Info: { any? },
     Tick: number?,
-    Return: any,
+    Return: T,
     State: string,
     StateConfirmation: boolean,
 
-    Changed: Signal.Signal<string, string> | RBXScriptSignal, -- ignore if this is underlined
-    StatusChanged: Signal.Signal<boolean> | RBXScriptSignal, -- ignore if this is underlined
-    StateRemoved: Signal.Signal<string> | RBXScriptSignal, -- ignore if this is underlined
-    StateAdded: Signal.Signal<string> | RBXScriptSignal, -- ignore if this is underlined
+    Changed: Signal.Signal<string, string>, -- ignore if this is underlined
+    StatusChanged: Signal.Signal<boolean>, -- ignore if this is underlined
+    StateRemoved: Signal.Signal<string>, -- ignore if this is underlined
+    StateAdded: Signal.Signal<string>, -- ignore if this is underlined
 
-    RemoveState: (self: Stater, Name: string) -> nil,
-    AddState: (self: Stater, Name: string, State: State) -> nil,
-    GetCurrentState: (self: Stater) -> string?,
-    IsWorking: (self: Stater) -> boolean,
-    SetState: (self: Stater, Name: string) -> nil,
-    Start: (self: Stater, StartingState: string) -> nil,
-    Stop: (self: Stater) -> nil,
-    Destroy: (self: Stater) -> nil
+    RemoveState: (self: Stater<T>, Name: string) -> nil,
+    AddState: (self: Stater<T>, Name: string, State: State<T>) -> nil,
+    GetCurrentState: (self: Stater<T>) -> string?,
+    IsWorking: (self: Stater<T>) -> boolean,
+    SetState: (self: Stater<T>, Name: string) -> nil,
+    Start: (self: Stater<T>, StartingState: string) -> nil,
+    Stop: (self: Stater<T>) -> nil,
+    Destroy: (self: Stater<T>) -> nil
 }
-
--- Functions
-
-local function GetStates(Table: {[string]: State}, Origin: {[string]: State}?)
-    local ExtractedStates = Origin or {}
-
-    for Key, State in Table do
-        local Type = type(State)
-
-        if Type == "table" then
-            GetStates(State, ExtractedStates)
-        elseif Type == "function" then
-            ExtractedStates[Key] = State
-        end
-    end
-
-    return ExtractedStates
-end
-
-local function GetStatesTable(Search: Instance | {[string]: State})
-    local SearchType = type(Search)
-
-    if SearchType ~= "table" then
-        local Children = Search:GetChildren()
-        local Modules = {}
-
-        for _, Module: ModuleScript in Children do
-            if Module:IsA("ModuleScript") then
-                table.insert(require(Module), Modules)
-            end
-        end
-
-        Search = Modules
-    end
-
-    return GetStates(Search)
-end
 
 --[=[
     Returns a new Stater Object.
@@ -115,9 +78,8 @@ end
     @param Tick -- Optional tick to be set.
     @param Return -- Determines what to return in the first parameter of each state.
 ]=]
-function Stater.new(States: {[string]: State} | Instance, Tick: number?, Return: any?): Stater
-    local StatesType = typeof(States)
-    assert(StatesType == "table" or StatesType == "Instance", "Please provide a valid table with the states.")
+function Stater.new<T>(States: {[string]: State} | Instance, Tick: number?, Return: T?): Stater<T>
+    assert(type(States) == "table", "Please provide a valid table with the states.")
 
     local self = setmetatable({}, Stater)
 
@@ -128,7 +90,7 @@ function Stater.new(States: {[string]: State} | Instance, Tick: number?, Return:
     }
 
     -- Usable
-    self.States = GetStatesTable(States)
+    self.States = States
     self.Info = {}
     self.Tick = Tick or 0
     self.State = nil
