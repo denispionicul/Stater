@@ -45,7 +45,7 @@ end
     .StateAdded RBXScriptSignal -- A signal that fires whenever a state is removed via the Stater:RemoveState() method. Returns the State Name.
 ]=]
 
-type State<T> = (self: T) -> boolean?
+type State<T> = (self: T?) -> boolean?
 
 export type Stater<T> = {
     States: {[string]: State<T>},
@@ -78,7 +78,7 @@ export type Stater<T> = {
     @param Tick -- Optional tick to be set.
     @param Return -- Determines what to return in the first parameter of each state.
 ]=]
-function Stater.new<T>(States: {[string]: State} | Instance, Tick: number?, Return: T?): Stater<T>
+function Stater.new<T>(States: {[string]: State<T>} | Instance, Tick: number?, Return: T?): Stater<T>
     assert(type(States) == "table", "Please provide a valid table with the states.")
 
     local self = setmetatable({}, Stater)
@@ -194,7 +194,7 @@ end
 --[=[
     Begins the Stater
 
-    @param State -- The function name inside States represented by a string, this state will be set at the start.
+    @param StartingState string -- The function name inside States represented by a string, this state will be set at the start.
     @error "No State" -- Happens when no State is provided.
     @error "Already Started" -- Happens when the Stater has already started.
 ]=]
