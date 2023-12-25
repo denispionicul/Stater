@@ -1,3 +1,5 @@
+# THIS MODULE HAS BEEN MOVED [HERE](https://github.com/denispionicul/Stardust)
+
 # Stater
 Stater is a finite state machine module with the purpose of easing the creation of ai and npcs in games,
 Stater was built with the intent of being used in module scripts.
